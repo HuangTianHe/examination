@@ -7,7 +7,7 @@ from examination.util import *
 
 
 prefix = 'http://www.bing.com/dict/search?q='
-r=redis.StrictRedis(host='127.0.0.1',port=6379,db=0)
+r=redis.StrictRedis(host='172.18.4.81',port=6379,db=1)
 class BingwordSpider(scrapy.Spider):
     name = "bingword"
     start_urls = (
