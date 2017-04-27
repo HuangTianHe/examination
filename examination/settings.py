@@ -74,9 +74,9 @@ DOWNLOADER_MIDDLEWARES = {
 #    'examination.pipelines.SomePipeline': 300,
 #}
 
-ITEM_PIPELINES = {
-    'examination.pipelines.ExaminationPipeline': 10,
-}
+#ITEM_PIPELINES = {
+#    'examination.pipelines.ExaminationPipeline': 10,
+#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
