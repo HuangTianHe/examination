@@ -43,6 +43,6 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
 
 def insert_basic_word_properties(basic_id,item):
     for attribute,translations in item['desc'].items():
-        translations=translations.split('；')
+        translations=translations.split(u'；')
         for translation in translations:
             insert_one_basic_word_property(basic_id,attribute,translation)
