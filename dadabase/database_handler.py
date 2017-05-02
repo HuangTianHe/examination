@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker,relationship
 
 from dadabase.basic_word_base import BasicWordBase
 from dadabase.basic_word_property import BasicWordProperty
+from dadabase.basic_word_phonetic import BasicWordPhonetic
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
 # 创建DBSession类型:
@@ -45,6 +46,15 @@ def insert_basic_word_properties(basic_id,item):
     for attribute,translations in item['desc'].items():
         print attribute
         print translations
-        translations=translations.split(u'；')
+        translations=translations.split('；')
         for translation in translations:
             insert_one_basic_word_property(basic_id,attribute,translation)
+
+def insert_basic_word_phonetic(prop_id,item):
+    for type in (0,1):
+        # 创建session对象:
+        session = DBSession()
+        ob=BasicWordPhonetic()
+        ob.prop_id=prop_id
+        ob.spell=item['']
+
