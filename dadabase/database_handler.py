@@ -42,7 +42,7 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
     ob.update_time=datetime.datetime.now()
 
 def insert_basic_word_properties(basic_id,item):
-    for attribute,translations in item['desc'].items:
+    for attribute,translations in item['desc'].items():
         translations=translations.split(';')
         for translation in translations:
             insert_one_basic_word_property(basic_id,attribute,translation)
