@@ -49,6 +49,7 @@ def insert_basic_word_properties(basic_id,item):
         translations=translations.encode('utf-8')
         print attribute
         print translations
+        print type(translations)
         translations=translations.split(u'；')
         if not translations:
             translations = translations.split('；')
