@@ -50,6 +50,8 @@ def insert_basic_word_properties(basic_id,item):
         print attribute
         print translations
         translations=translations.split(u'；')
+        if not translations:
+            translations = translations.split('；')
         for translation in translations:
             insert_one_basic_word_property(basic_id,attribute,translation)
 
