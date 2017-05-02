@@ -1,6 +1,7 @@
 #coding=utf-8
 
 import datetime
+import json
 
 from sqlalchemy import Column, String, create_engine,Integer,ForeignKey
 from sqlalchemy.orm import sessionmaker,relationship
@@ -16,7 +17,7 @@ def insert_basic_word_base(item):
     session = DBSession()
     ob=BasicWordBase()
     ob.spell=item['en_word']
-    ob.desc=item['cn_meaning']
+    ob.desc=json.dumps(item['cn_meaning'],encoding='utf-8',ensure_ascii=False)
     ob.status=1
     ob.upload_time=datetime.datetime.now()
     ob.update_time=datetime.datetime.now()
