@@ -43,6 +43,8 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
     #ob.source_id=0
     ob.upload_time=datetime.datetime.now()
     ob.update_time=datetime.datetime.now()
+    session.add(ob)
+    session.commit()
 
 def insert_basic_word_properties(basic_id,item):
     for attribute,translations in item['desc'].items():
