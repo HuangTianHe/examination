@@ -113,6 +113,7 @@ class BingwordSpider(scrapy.Spider):
                 if t == 'All':
                     continue
                 surl = 'http://www.bing.com/dict/service?q='+en_word+'%20'+t+'&dtype=sen'
+                print surl
                 yield scrapy.Request(url=surl,meta={'en_word':en_word, 'word':t},callback=self.parse_sentence) 
 
 
