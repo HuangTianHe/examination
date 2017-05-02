@@ -4,7 +4,7 @@ import redis
 import json
 from examination.bingitems import BingItems , BingEgSenItems
 from examination.util import * 
-
+from dadabase import database_handler
 
 prefix = 'http://www.bing.com/dict/search?q='
 r=redis.StrictRedis(host='172.18.4.81',port=6379,db=1)
@@ -108,6 +108,7 @@ class BingwordSpider(scrapy.Spider):
             item['cn_meaning'] =  explain_list
             print "*"*100 
             bing_item_output(item)
+            database_handler.insert_basic_word_base(item)
             print "*"*100 
             yield item
             for t in explain_list:
@@ -149,4 +150,4 @@ class BingwordSpider(scrapy.Spider):
         print "="*100 
         bing_sen_output(item)
         print "="*100 
-        yield  item      
+        yield item
