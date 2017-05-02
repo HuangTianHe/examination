@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker,relationship
 
 from dadabase.basic_word_base import BasicWordBase
 
-engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word')
+engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 
