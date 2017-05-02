@@ -111,7 +111,8 @@ class BingwordSpider(scrapy.Spider):
             item['cn_meaning'] =  explain_list
             print "*"*100 
             bing_item_output(item)
-            database_handler.insert_basic_word_base(item)
+            base_id=database_handler.insert_basic_word_base(item)
+            database_handler.insert_basic_word_properties(base_id,item)
             print "*"*100 
             yield item
             for t in explain_list:

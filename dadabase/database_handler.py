@@ -7,6 +7,7 @@ from sqlalchemy import Column, String, create_engine,Integer,ForeignKey
 from sqlalchemy.orm import sessionmaker,relationship
 
 from dadabase.basic_word_base import BasicWordBase
+from dadabase.basic_word_property import BasicWordProperty
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
 # 创建DBSession类型:
@@ -28,3 +29,20 @@ def insert_basic_word_base(item):
     print ob.id
     return ob.id
 
+def insert_one_basic_word_property(basic_id,attribute,translation):
+    # 创建session对象:
+    session = DBSession()
+    ob=BasicWordProperty()
+    ob.base_id=basic_id
+    ob.type=0
+    ob.attribute=attribute
+    ob.translation=translation
+    #ob.source_id=0
+    ob.upload_time=datetime.datetime.now()
+    ob.update_time=datetime.datetime.now()
+
+def insert_basic_word_properties(basic_id,item):
+    for attribute,translations in item['desc'].items:
+        translations=translations.split(';')
+        for translation in translations:
+            insert_one_basic_word_property(basic_id,attribute,translation)
