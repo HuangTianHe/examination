@@ -8,5 +8,5 @@
 
 class ExaminationPipeline(object):
     def process_item(self, item, spider):
-        print item
+        print 'class ExaminationPipeline(object)'
         return item
