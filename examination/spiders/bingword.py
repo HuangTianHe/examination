@@ -37,6 +37,7 @@ class BingwordSpider(scrapy.Spider):
             detail_list = response.xpath('//*[@class="qdef"]/ul/li')
             natures = []
             natures_meaning = []
+            desc={}
             for d in detail_list:
                 nature = d.xpath('.//span[@class="pos"]/text()').extract()
                 meaning = d.xpath('.//span[@class="def"]/span/text()').extract()
@@ -44,9 +45,11 @@ class BingwordSpider(scrapy.Spider):
                     continue
                 natures.append(nature[0])
                 natures_meaning.append(meaning[0])
+                desc[nature[0]]=meaning[0]
               
             item['natures'] = natures
             item['natures_meaning'] = natures_meaning
+            item['desc']=desc
 
             tense_name_list = response.xpath('.//div[@class="qdef"]/div[@class="hd_div1"]//div[@class="hd_if"]/span/text()').extract()
             tense_word_list= response.xpath('.//div[@class="qdef"]/div[@class="hd_div1"]//div[@class="hd_if"]/a/text()').extract()

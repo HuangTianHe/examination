@@ -17,7 +17,8 @@ def insert_basic_word_base(item):
     session = DBSession()
     ob=BasicWordBase()
     ob.spell=item['en_word']
-    ob.desc=json.dumps(item['cn_meaning'],encoding='utf-8',ensure_ascii=False)
+    #ob.desc=json.dumps(item['cn_meaning'],encoding='utf-8',ensure_ascii=False)
+    ob.desc = json.dumps(item['desc'], encoding='utf-8', ensure_ascii=False)
     ob.type=1
     ob.status=1
     ob.upload_time=datetime.datetime.now()

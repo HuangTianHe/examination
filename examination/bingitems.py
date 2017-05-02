@@ -9,6 +9,8 @@ class BingItems(scrapy.Item):
     audio_href = scrapy.Field()
     natures = scrapy.Field()
     natures_meaning = scrapy.Field()
+    #单词的详细解释
+    desc=scrapy.Field()
     tense_names = scrapy.Field()
     tense_words = scrapy.Field()
     phrase_nature = scrapy.Field()
