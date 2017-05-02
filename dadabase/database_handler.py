@@ -54,6 +54,9 @@ def insert_basic_word_properties(basic_id,item):
         if not translations:
             translations = translations.split('；')
         for translation in translations:
+            print '-'*20
+            print attribute,translation
+            print '-'*20
             insert_one_basic_word_property(basic_id,attribute,translation)
 
 def insert_basic_word_phonetic(prop_id,item):
