@@ -46,9 +46,10 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
 
 def insert_basic_word_properties(basic_id,item):
     for attribute,translations in item['desc'].items():
+        translations=translations.encode('utf-8')
         print attribute
         print translations
-        translations=translations.split(r'；')
+        translations=translations.split(u'；')
         for translation in translations:
             insert_one_basic_word_property(basic_id,attribute,translation)
 
@@ -58,5 +59,9 @@ def insert_basic_word_phonetic(prop_id,item):
         session = DBSession()
         ob=BasicWordPhonetic()
         ob.prop_id=prop_id
-        ob.spell=item['']
+        ob.spell=item['audio_us_href']
+        ob.audio_file_md5=item['audio_us']
+        ob.type=type
+        session.add(ob)
+        session.commit()
 

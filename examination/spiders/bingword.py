@@ -11,7 +11,7 @@ r=redis.StrictRedis(host='172.18.4.81',port=6379,db=1)
 class BingwordSpider(scrapy.Spider):
     name = "bingword"
     start_urls = (
-        'http://www.baidu.com',
+        #'http://www.baidu.com',
         'http://cn.bing.com/dict/search?intlF=0&q=right&FORM=HDRSC6'
     )
 
