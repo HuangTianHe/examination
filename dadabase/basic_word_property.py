@@ -16,7 +16,7 @@ class BasicWordProperty(Base):
     #2.英英翻译通过页面上【英英】一栏根据词性词义获取并保存
 
     #主键
-    id=Column(Integer)
+    id=Column(Integer,primary_key=True)
     #对应 basic_word_base.id 字段
     base_id=Column(Integer)
     #0-英汉翻译；1-英英翻译
