@@ -41,6 +41,7 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
     ob.attribute=attribute
     ob.translation=translation
     #ob.source_id=0
+    ob.status=1
     ob.upload_time=datetime.datetime.now()
     ob.update_time=datetime.datetime.now()
     session.add(ob)
