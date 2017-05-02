@@ -15,8 +15,8 @@ def insert_basic_word_base(item):
     # 创建session对象:
     session = DBSession()
     ob=BasicWordBase()
-    ob.spell=item.en_word
-    ob.desc=item.cn_meaning
+    ob.spell=item['en_word']
+    ob.desc=item['cn_meaning']
     ob.status=1
     ob.upload_time=datetime.datetime.now()
     ob.update_time=datetime.datetime.now()
