@@ -120,7 +120,8 @@ def save_sentence(item):
         sentence_en=''.join(slist_en)
         session = DBSession()
         ob = BasicWordSentence()
-        ob.prop_id='%s&%s'%(en_word,word)
+        ob.prop_id=0
+        ob.prop_ext='%s&%s'%(en_word,word)
         ob.index=i
         ob.english=sentence_en
         ob.chinese=sentence_cn

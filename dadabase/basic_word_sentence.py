@@ -25,3 +25,4 @@ class BasicWordSentence(Base):
     chinese=Column(Text)
     #0-Disabled,  1-Enabled
     status=Column(Integer)
+    prop_ext=Column(String(128))
