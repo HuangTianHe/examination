@@ -50,7 +50,7 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
     session.commit()
     return ob.id
 
-def insert_basic_word_properties(basic_id,item):
+def insert_basic_word_properties(basic_id,material_ids,item):
     for attribute,translations in item['desc'].items():
         translations=translations.encode('utf-8')
         translations=translations.split(u'；')
@@ -58,16 +58,16 @@ def insert_basic_word_properties(basic_id,item):
             translations = translations.split('；')
         for translation in translations:
             prop_id=insert_one_basic_word_property(basic_id,attribute,translation)
-            insert_basic_word_phonetic(prop_id,item)
+            insert_basic_word_phonetic(prop_id,material_ids,item)
 
-def insert_basic_word_phonetic(prop_id,item):
+def insert_basic_word_phonetic(prop_id,material_ids,item):
 
     # 创建session对象:
     session = DBSession()
     ob=BasicWordPhonetic()
     ob.prop_id=prop_id
     ob.spell=item['audio_us_href']
-    ob.audio_file_md5=insert_basic_material(item['audio_us'])
+    ob.audio_file_md5=material_ids[0]
     ob.type=0
     session.add(ob)
     session.commit()
@@ -77,30 +77,33 @@ def insert_basic_word_phonetic(prop_id,item):
     ob = BasicWordPhonetic()
     ob.prop_id = prop_id
     ob.spell = item['audio_href']
-    ob.audio_file_md5 =insert_basic_material( item['audio'])
+    ob.audio_file_md5 =material_ids[1]
     ob.type = 1
     session.add(ob)
     session.commit()
-def insert_basic_material(audio):
-    regext=re.compile('(https://.*?,)',re.S)
-    url=regext.findall(audio)
-    url=url[0]
-    print url
-    session=DBSession()
-    ob=BasicMaterail()
-    ob.md5sum=url
-    ob.img_url=''
-    ob.local_ip=''
-    ob.local_path=''
-    ob.fdfs_group_name=''
-    ob.fdfs_storage_ip=''
-    ob.fdfs_remote_file_id=''
-    ob.fdfs_size='0'
-    ob.upload_time=datetime.datetime.now()
-    ob.update_time=datetime.datetime.now()
-    session.add(ob)
-    session.commit()
-    return ob.id
+def insert_basic_material(item):
+    ids=[]
+    for audio in (item['audio_us'],item['audio']):
+        regext=re.compile('(https://.*?,)',re.S)
+        url=regext.findall(audio)
+        url=url[0]
+        print url
+        session=DBSession()
+        ob=BasicMaterail()
+        ob.md5sum=url
+        ob.img_url=''
+        ob.local_ip=''
+        ob.local_path=''
+        ob.fdfs_group_name=''
+        ob.fdfs_storage_ip=''
+        ob.fdfs_remote_file_id=''
+        ob.fdfs_size='0'
+        ob.upload_time=datetime.datetime.now()
+        ob.update_time=datetime.datetime.now()
+        session.add(ob)
+        session.commit()
+        ids.append(ob.id)
+    return ids
 
 def insert_basic_word_transform():
     pass
