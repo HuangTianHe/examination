@@ -84,7 +84,7 @@ class BingwordSpider(scrapy.Spider):
             item['phrase_words'] = colid_words_list
 
             #FANYI
-            antoid_natures = response.xpath('//div[@id="synoid"]//div[@class="de_title1"]/text()').extract()
+            antoid_natures = response.xpath('//div[@id="antoid"]//div[@class="de_title1"]/text()').extract()
             antoid_list = response.xpath('//div[@id="antoid"]//div[@class="df_div2"]')
             antoid_words_list = []
             for d in antoid_list:
