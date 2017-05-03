@@ -16,7 +16,7 @@ class BasicWordTranceform(Base):
 
     #主键
     id=Column(Integer)
-    #单词转换类型： 0-复数形式，第三人称单数-plural；1-现在分词-ing；2-过去分词，过去式-past
+    #0-复数形式，1-第三人称单数-plural；2-现在分词-ing；3-过去分词，过去式-past；4-比较级；5-最高级
     type=Column(Integer)
     #对应 basic_word_property.id 字段
     prop_id=Column(Integer)

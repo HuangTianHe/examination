@@ -114,6 +114,7 @@ class BingwordSpider(scrapy.Spider):
             bing_item_output(item)
             base_id=database_handler.insert_basic_word_base(item)
             database_handler.insert_basic_word_properties(base_id,item)
+
             print "*"*100 
             yield item
             for t in explain_list:

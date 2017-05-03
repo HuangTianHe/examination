@@ -4,6 +4,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import datetime
 import json
+import re
 
 from sqlalchemy import Column, String, create_engine,Integer,ForeignKey
 from sqlalchemy.orm import sessionmaker,relationship
@@ -11,6 +12,7 @@ from sqlalchemy.orm import sessionmaker,relationship
 from dadabase.basic_word_base import BasicWordBase
 from dadabase.basic_word_property import BasicWordProperty
 from dadabase.basic_word_phonetic import BasicWordPhonetic
+from dadabase.basic_material import BasicMaterail
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
 # 创建DBSession类型:
@@ -46,6 +48,7 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
     ob.update_time=datetime.datetime.now()
     session.add(ob)
     session.commit()
+    return ob.id
 
 def insert_basic_word_properties(basic_id,item):
     for attribute,translations in item['desc'].items():
@@ -54,19 +57,39 @@ def insert_basic_word_properties(basic_id,item):
         if not translations:
             translations = translations.split('；')
         for translation in translations:
-            insert_one_basic_word_property(basic_id,attribute,translation)
+            prop_id=insert_one_basic_word_property(basic_id,attribute,translation)
+            insert_basic_word_phonetic(prop_id,item)
 
-def insert_basic_word_phonetic(prop_id,audio_file_md5,item):
-    for type in (0,1):
-        # 创建session对象:
-        session = DBSession()
-        ob=BasicWordPhonetic()
-        ob.prop_id=prop_id
-        ob.spell=item['audio_us_href']
-        ob.audio_file_md5=item['audio_us']
-        ob.type=type
-        session.add(ob)
-        session.commit()
+def insert_basic_word_phonetic(prop_id,item):
+
+    # 创建session对象:
+    session = DBSession()
+    ob=BasicWordPhonetic()
+    ob.prop_id=prop_id
+    ob.spell=item['audio_us_href']
+    ob.audio_file_md5=insert_basic_material(item['audio_us'])
+    ob.type=0
+    session.add(ob)
+    session.commit()
+
+    # 创建session对象:
+    session = DBSession()
+    ob = BasicWordPhonetic()
+    ob.prop_id = prop_id
+    ob.spell = item['audio_href']
+    ob.audio_file_md5 =insert_basic_material( item['audio'])
+    ob.type = 1
+    session.add(ob)
+    session.commit()
+def insert_basic_material(audio):
+    url=re.compile('(https://.*?,)',re.S)
+    print url
+    session=DBSession()
+    ob=BasicMaterail()
+    ob.img_url=url
+    session.add(ob)
+    session.commit()
+    return ob.id
 
 def insert_basic_word_transform():
     pass

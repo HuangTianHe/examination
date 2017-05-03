@@ -14,7 +14,7 @@ class BasicWordPhonetic(Base):
     __tablename__ = 'basic_word_phonetic'
 
     #主键
-    id=Column(Integer)
+    id=Column(Integer,primary_key=True)
     #对应 basic_word_property.id 字段
     prop_id=Column(Integer,primary_key=True)
     #音标书写
