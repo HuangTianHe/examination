@@ -82,11 +82,22 @@ def insert_basic_word_phonetic(prop_id,item):
     session.add(ob)
     session.commit()
 def insert_basic_material(audio):
-    url=re.compile('(https://.*?,)',re.S)
+    regext=re.compile('(https://.*?,)',re.S)
+    url=regext.findall(regext)
+    url=url[0]
     print url
     session=DBSession()
     ob=BasicMaterail()
+    ob.md5sum=''
     ob.img_url=url
+    ob.local_ip=''
+    ob.local_path=''
+    ob.fdfs_group_name=''
+    ob.fdfs_storage_ip=''
+    ob.fdfs_remote_file_id=''
+    ob.fdfs_size='0'
+    ob.upload_time=datetime.datetime.now()
+    ob.update_time=datetime.datetime.now()
     session.add(ob)
     session.commit()
     return ob.id
