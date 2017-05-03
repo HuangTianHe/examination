@@ -115,8 +115,14 @@ def insert_basic_word_transform(item):
         vaule=item['tense_words'][i]
         session = DBSession()
         ob = BasicWordTranceform()
+        # 复数
+        if item['tense_names'][i].strip() == 'Plural Form：':
+            ob.type = 0
+            ob.prop_id = 0
+            ob.spell = item['tense_words'][i]
+            ob.status = 0
         #第三人称单数
-        if item['tense_names'][i].strip()=='Simple Present：':
+        elif item['tense_names'][i].strip()=='Simple Present：':
             ob.type=1
             ob.prop_id=0
             ob.spell=item['tense_words'][i]
