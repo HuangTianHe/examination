@@ -13,6 +13,8 @@ from dadabase.basic_word_base import BasicWordBase
 from dadabase.basic_word_property import BasicWordProperty
 from dadabase.basic_word_phonetic import BasicWordPhonetic
 from dadabase.basic_material import BasicMaterail
+from dadabase.basic_word_sentence import BasicWordSentence
+from dadabase import  ssdb_handler
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
 # 创建DBSession类型:
@@ -109,4 +111,22 @@ def insert_basic_word_transform():
     pass
 
 def save_sentence(item):
+    en_word=item['en_word']
+    word=item['eg_sentence']['word']
+    for i in range(len(item['eg_sentence']['cn_list'])):
+        slist_cn=item['eg_sentence']['cn_list'][i]
+        sentence_cn =''.join(slist_cn)
+        slist_en =item['eg_sentence']['en_list'][i]
+        sentence_en=''.join(slist_en)
+        session = DBSession()
+        ob = BasicWordSentence()
+        ob.prop_id='%s&%s'%(en_word,word)
+        ob.index=i
+        ob.english=sentence_en
+        ob.chinese=sentence_cn
+        ob.status=0
+        session.add(ob)
+        session.commit()
+
+def save_ssdb(item):
     pass

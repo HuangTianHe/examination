@@ -152,6 +152,7 @@ class BingwordSpider(scrapy.Spider):
         eg_sentence['en_list'] = en_list
         item['eg_sentence'] = eg_sentence
         item['en_word'] = en_word
+        database_handler.save_sentence(item)
         #print json.dumps(item, indent=2, ensure_ascii=True)
         #print item
         #print "="*100
