@@ -5,6 +5,8 @@ sys.setdefaultencoding('utf-8')
 import datetime
 import json
 import re
+import traceback
+
 
 from sqlalchemy import Column, String, create_engine,Integer,ForeignKey
 from sqlalchemy.orm import sessionmaker,relationship
@@ -16,12 +18,22 @@ from dadabase.basic_material import BasicMaterail
 from dadabase.basic_word_sentence import BasicWordSentence
 from dadabase.basic_word_association import BasicWordAssociation
 from dadabase.basic_word_transform import BasicWordTranceform
-from dadabase import  ssdb_handler
+
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 
+def handle_exception(fun):
+    def inner_fun(*args,**kwargs):
+        try:
+            return  fun(*args,**kwargs)
+        except Exception,e:
+            t,b,tb=sys.exc_info()
+            print '%s:%s,%s'%(t,b,traceback.print_tb(tb))
+    return inner_fun
+
+@handle_exception
 def insert_basic_word_base(item):
     # 创建session对象:
     session = DBSession()
@@ -35,9 +47,9 @@ def insert_basic_word_base(item):
     ob.update_time=datetime.datetime.now()
     session.add(ob)
     session.commit()
-    print ob.id
     return ob.id
 
+@handle_exception
 def insert_one_basic_word_property(basic_id,attribute,translation):
     # 创建session对象:
     session = DBSession()
@@ -64,6 +76,7 @@ def insert_basic_word_properties(basic_id,material_ids,item):
             prop_id=insert_one_basic_word_property(basic_id,attribute,translation)
             insert_basic_word_phonetic(prop_id,material_ids,item)
 
+@handle_exception
 def insert_basic_word_phonetic(prop_id,material_ids,item):
 
     # 创建session对象:
@@ -86,6 +99,7 @@ def insert_basic_word_phonetic(prop_id,material_ids,item):
     session.add(ob)
     session.commit()
 
+@handle_exception
 def insert_basic_material(item):
     ids=[]
     for audio in (item['audio_us'],item['audio']):
@@ -155,8 +169,12 @@ def insert_basic_word_transform(item):
             print item['tense_names'][i]
             print item['tense_words'][i]
 
-        session.add(ob)
-        session.commit()
+        try:
+            session.add(ob)
+            session.commit()
+        except Exception,e:
+            t,b,tb=sys.exc_info()
+            print '%s:%s,%s'%(t,b,traceback.print_tb(tb))
 
 def save_sentence(item):
     en_word=item['en_word']
