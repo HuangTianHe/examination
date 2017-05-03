@@ -149,9 +149,6 @@ def insert_basic_word_transform(item):
             print item['tense_names'][i]
             print item['tense_words'][i]
 
-
-
-
         session.add(ob)
         session.commit()
 

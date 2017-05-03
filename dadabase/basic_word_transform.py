@@ -15,7 +15,7 @@ class BasicWordTranceform(Base):
     #通过页面上转换一栏获取数据
 
     #主键
-    id=Column(Integer)
+    id=Column(Integer,primary_key=True)
     #0-复数形式，1-第三人称单数-plural；2-现在分词-ing；3-过去分词，过去式-past；4-比较级；5-最高级
     type=Column(Integer)
     #对应 basic_word_property.id 字段
