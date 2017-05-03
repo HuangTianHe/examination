@@ -152,7 +152,7 @@ class BingwordSpider(scrapy.Spider):
         item['en_word'] = en_word
         #print json.dumps(item, indent=2, ensure_ascii=True)
         #print item
-        print "="*100 
-        bing_sen_output(item)
-        print "="*100 
+        #print "="*100
+        #bing_sen_output(item)
+        #print "="*100
         yield item
