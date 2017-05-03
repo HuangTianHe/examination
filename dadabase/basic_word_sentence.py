@@ -14,7 +14,7 @@ class BasicWordSentence(Base):
     __tablename__ = 'basic_word_sentence'
 
     #主键
-    id=Column(Integer)
+    id=Column(Integer,primary_key=True)
     #对应 basic_word_property.id 字段
     prop_id=Column(Integer)
     #句子索引
