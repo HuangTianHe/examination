@@ -24,7 +24,7 @@ class BingwordSpider(scrapy.Spider):
         else:
             #en_word = response.meta['en_word']
             en_word = str(response.meta)
-            en_word='wrong'
+            en_word='man'
             pr_us  = response.xpath('//*[@class="hd_prUS"]/text()').extract()[0]
             gr = response.xpath('//*[@class="hd_pr"]/text()').extract()[0]
             audio_us = response.xpath('//*[@class="hd_tf"]/a/@onmouseover').extract()[0]
