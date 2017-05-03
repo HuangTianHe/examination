@@ -157,7 +157,8 @@ def save_basic_word_association(master_id,item):
             ob.type=1
             ob.master_base_id=master_id
             ob.status=0
-            ob.slave_spell=one.strip()
+            ob.master_prop_id = 0
+            ob.slave_spell = one.strip()
             slave = session.query(BasicWordBase).filter_by(spell=one.strip()).first()
             if slave:
                 ob.slave_base_id=slave.id
@@ -174,7 +175,8 @@ def save_basic_word_association(master_id,item):
             ob.type=2
             ob.master_base_id=master_id
             ob.status=0
-            ob.slave_spell=one.strip()
+            ob.master_prop_id = 0
+            ob.slave_spell = one.strip()
             slave = session.query(BasicWordBase).filter_by(spell=one.strip()).first()
             if slave:
                 ob.slave_base_id=slave.id
