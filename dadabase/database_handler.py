@@ -50,19 +50,13 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
 def insert_basic_word_properties(basic_id,item):
     for attribute,translations in item['desc'].items():
         translations=translations.encode('utf-8')
-        print attribute
-        print translations
-        print type(translations)
         translations=translations.split(u'；')
         if not translations:
             translations = translations.split('；')
         for translation in translations:
-            print '-'*20
-            print attribute,translation
-            print '-'*20
             insert_one_basic_word_property(basic_id,attribute,translation)
 
-def insert_basic_word_phonetic(prop_id,item):
+def insert_basic_word_phonetic(prop_id,audio_file_md5,item):
     for type in (0,1):
         # 创建session对象:
         session = DBSession()
@@ -73,4 +67,7 @@ def insert_basic_word_phonetic(prop_id,item):
         ob.type=type
         session.add(ob)
         session.commit()
+
+def insert_basic_word_transform():
+    pass
 
