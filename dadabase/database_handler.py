@@ -83,7 +83,7 @@ def insert_basic_word_phonetic(prop_id,item):
     session.commit()
 def insert_basic_material(audio):
     regext=re.compile('(https://.*?,)',re.S)
-    url=regext.findall(regext)
+    url=regext.findall(audio)
     url=url[0]
     print url
     session=DBSession()
