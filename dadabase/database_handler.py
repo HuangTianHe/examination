@@ -15,6 +15,7 @@ from dadabase.basic_word_phonetic import BasicWordPhonetic
 from dadabase.basic_material import BasicMaterail
 from dadabase.basic_word_sentence import BasicWordSentence
 from dadabase.basic_word_association import BasicWordAssociation
+from dadabase.basic_word_transform import BasicWordTranceform
 from dadabase import  ssdb_handler
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
@@ -109,8 +110,50 @@ def insert_basic_material(item):
         ids.append(ob.id)
     return ids
 
-def insert_basic_word_transform():
-    pass
+def insert_basic_word_transform(item):
+    for i in range(len(item['tense_names'])):
+        vaule=item['tense_words'][i]
+        session = DBSession()
+        ob = BasicWordTranceform()
+        #第三人称单数
+        if item['tense_names'][i].strip()=='Simple Present：':
+            ob.type=1
+            ob.prop_id=0
+            ob.spell=item['tense_words'][i]
+            ob.status=0
+        #现在分词-ing
+        elif item['tense_names'][i].strip()=='Present Participle：':
+            ob.type=2
+            ob.prop_id=0
+            ob.spell=item['tense_words'][i]
+            ob.status=0
+        #过去式-past
+        elif item['tense_names'][i].strip()=='Past Tense：':
+            ob.type=3
+            ob.prop_id=0
+            ob.spell=item['tense_words'][i]
+            ob.status=0
+        #比较级
+        elif item['tense_names'][i].strip()=='Comparative Degree：':
+            ob.type=4
+            ob.prop_id=0
+            ob.spell=item['tense_words'][i]
+            ob.status=0
+        #最高级
+        elif item['tense_names'][i].strip()=='Superlative：':
+            ob.type=5
+            ob.prop_id=0
+            ob.spell=item['tense_words'][i]
+            ob.status=0
+        else:
+            print item['tense_names'][i]
+            print item['tense_words'][i]
+
+
+
+
+        session.add(ob)
+        session.commit()
 
 def save_sentence(item):
     en_word=item['en_word']
@@ -198,6 +241,5 @@ def save_basic_word_association(master_id,item):
 def save_ssdb(master_id,item):
     ssdb_kay='ssdb_word_%s'%(item['en_word'])
     transform={}
-    for i in range(len(item['tense_names'])):
-        transform[item['tense_names'][i]]=item['tense_words'][i]
+
     association={}

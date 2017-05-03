@@ -12,8 +12,9 @@ class BingwordSpider(scrapy.Spider):
     name = "bingword"
     start_urls = (
         #'http://www.baidu.com',
-        'http://cn.bing.com/dict/search?intlF=0&q=right&FORM=HDRSC6',
-        'http://cn.bing.com/dict/search?intlF=0&q=wrong&FORM=HDRSC6',
+        #'http://cn.bing.com/dict/search?intlF=0&q=right&FORM=HDRSC6',
+        #'http://cn.bing.com/dict/search?intlF=0&q=wrong&FORM=HDRSC6',
+        # 'http://cn.bing.com/dict/search?intlF=0&q=man&FORM=HDRSC6',
     )
 
     def parse(self, response):
