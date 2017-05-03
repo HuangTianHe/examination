@@ -88,8 +88,8 @@ def insert_basic_material(audio):
     print url
     session=DBSession()
     ob=BasicMaterail()
-    ob.md5sum=''
-    ob.img_url=url
+    ob.md5sum=url
+    ob.img_url=''
     ob.local_ip=''
     ob.local_path=''
     ob.fdfs_group_name=''
