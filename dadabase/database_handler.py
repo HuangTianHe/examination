@@ -141,7 +141,7 @@ def save_basic_word_association(master_id,item):
             ob.master_base_id=master_id
             ob.status=0
             ob.slave_spell=one.strip()
-            slave=session.query(BasicWordBase).filter(spell=one.strip())
+            slave=session.query(BasicWordBase).filter_by(spell=one.strip()).first()
             if slave:
                 ob.slave_base_id=slave.id
             else:
