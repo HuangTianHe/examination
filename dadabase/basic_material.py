@@ -10,7 +10,7 @@ Base = declarative_base()
 class BasicMaterail(Base):
     # 表的名字:
     __tablename__ = 'basic_material'
-    id=Column(Integer)
+    id=Column(Integer,primary_key=True)
     md5sum=Column(String(255))
     #上线的七牛地址
     img_url=Column(String(255))
