@@ -14,6 +14,7 @@ from dadabase.basic_word_property import BasicWordProperty
 from dadabase.basic_word_phonetic import BasicWordPhonetic
 from dadabase.basic_material import BasicMaterail
 from dadabase.basic_word_sentence import BasicWordSentence
+from dadabase.basic_word_association import BasicWordAssociation
 from dadabase import  ssdb_handler
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
@@ -24,7 +25,7 @@ def insert_basic_word_base(item):
     # 创建session对象:
     session = DBSession()
     ob=BasicWordBase()
-    ob.spell=item['en_word']
+    ob.spell=item['en_word'].strip()
     #ob.desc=json.dumps(item['cn_meaning'],encoding='utf-8',ensure_ascii=False)
     ob.desc = json.dumps(item['desc'], encoding='utf-8', ensure_ascii=False)
     ob.type=1
@@ -83,6 +84,7 @@ def insert_basic_word_phonetic(prop_id,material_ids,item):
     ob.type = 1
     session.add(ob)
     session.commit()
+
 def insert_basic_material(item):
     ids=[]
     for audio in (item['audio_us'],item['audio']):
@@ -129,5 +131,70 @@ def save_sentence(item):
         session.add(ob)
         session.commit()
 
-def save_ssdb(item):
-    pass
+def save_basic_word_association(master_id,item):
+    # 词组
+    for i in range(len(item['phrase_nature'])):
+        for one in item['phrase_words'][i]:
+            session=DBSession()
+            ob=BasicWordAssociation()
+            ob.type=0
+            ob.master_base_id=master_id
+            ob.status=0
+            ob.slave_spell=one.strip()
+            slave=session.query(BasicWordBase).filter(spell=one.strip())
+            if slave:
+                ob.slave_base_id=slave.id
+            else:
+                ob.slave_base_id=0
+            session.add(ob)
+            session.commit()
+    #近义词
+    for i in range(len(item['synonymous_nature'])):
+        for one in item['synonymous_words'][i]:
+            session=DBSession()
+            ob=BasicWordAssociation()
+            ob.type=1
+            ob.master_base_id=master_id
+            ob.status=0
+            ob.slave_spell=one.strip()
+            slave=session.query(BasicWordBase).filter(spell=one.strip())
+            if slave:
+                ob.slave_base_id=slave.id
+            else:
+                ob.slave_base_id=0
+            session.add(ob)
+            session.commit()
+
+    #反义词
+    for i in range(len(item['antonym_nature'])):
+        for one in item['antonym_words'][i]:
+            session=DBSession()
+            ob=BasicWordAssociation()
+            ob.type=2
+            ob.master_base_id=master_id
+            ob.status=0
+            ob.slave_spell=one.strip()
+            slave=session.query(BasicWordBase).filter(spell=one.strip())
+            if slave:
+                ob.slave_base_id=slave.id
+            else:
+                ob.slave_base_id=0
+            session.add(ob)
+            session.commit()
+
+
+
+
+
+
+    # 近义词
+    synonym = []
+    # 反义词
+    antonym = []
+
+def save_ssdb(master_id,item):
+    ssdb_kay='ssdb_word_%s'%(item['en_word'])
+    transform={}
+    for i in range(len(item['tense_names'])):
+        transform[item['tense_names'][i]]=item['tense_words'][i]
+    association={}

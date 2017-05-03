@@ -115,6 +115,7 @@ class BingwordSpider(scrapy.Spider):
             base_id=database_handler.insert_basic_word_base(item)
             material_ids=database_handler.insert_basic_material(item)
             database_handler.insert_basic_word_properties(base_id,material_ids,item)
+            database_handler.save_basic_word_association(base_id,item)
 
             print "*"*100 
             yield item

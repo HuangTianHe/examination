@@ -28,3 +28,4 @@ class BasicWordAssociation(Base):
     slave_base_id=Column(Integer)
     #0-Disabled,  1-Enabled
     status=Column(Integer)
+    slave_spell=Column(String(128))
