@@ -13,6 +13,7 @@ class BingwordSpider(scrapy.Spider):
     start_urls = (
         #'http://www.baidu.com',
         'http://cn.bing.com/dict/search?intlF=0&q=right&FORM=HDRSC6',
+        'http://cn.bing.com/dict/search?intlF=0&q=wrong&FORM=HDRSC6',
     )
 
     def parse(self, response):
@@ -119,7 +120,7 @@ class BingwordSpider(scrapy.Spider):
                 if t == 'All':
                     continue
                 surl = 'http://www.bing.com/dict/service?q='+en_word+'%20'+t+'&dtype=sen'
-                print surl
+                #print surl
                 yield scrapy.Request(url=surl,meta={'en_word':en_word, 'word':t},callback=self.parse_sentence) 
 
 

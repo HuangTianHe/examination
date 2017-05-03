@@ -71,3 +71,5 @@ def insert_basic_word_phonetic(prop_id,audio_file_md5,item):
 def insert_basic_word_transform():
     pass
 
+def save_sentence(item):
+    pass
