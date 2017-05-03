@@ -24,3 +24,4 @@ class BasicWordTranceform(Base):
     spell=Column(String(255))
     #0-Disabled,  1-Enabled
     status=Column(Integer)
+    prop_ext=Column(String(128))

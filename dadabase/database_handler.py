@@ -119,9 +119,13 @@ def insert_basic_material(item):
         ob.fdfs_size='0'
         ob.upload_time=datetime.datetime.now()
         ob.update_time=datetime.datetime.now()
-        session.add(ob)
-        session.commit()
-        ids.append(ob.id)
+        query=session.query(BasicMaterail).filter_by(md5sum=url).first()
+        if query:
+            ids.append(query.id)
+        else:
+            session.add(ob)
+            session.commit()
+            ids.append(ob.id)
     return ids
 
 def insert_basic_word_transform(item):
@@ -129,6 +133,7 @@ def insert_basic_word_transform(item):
         vaule=item['tense_words'][i]
         session = DBSession()
         ob = BasicWordTranceform()
+        ob.prop_ext=item['en_word'].strip()
         # 复数
         if item['tense_names'][i].strip() == 'Plural Form：':
             ob.type = 0
