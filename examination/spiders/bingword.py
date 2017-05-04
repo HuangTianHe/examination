@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+
+import json
+import re
 import scrapy
 import redis
-import json
 from examination.bingitems import BingItems , BingEgSenItems
 from examination.util import * 
 from dadabase import database_handler
@@ -23,12 +25,13 @@ class BingwordSpider(scrapy.Spider):
 
     def parse(self, response):
         item = BingItems()
+        regext=re.compile('&q=(.*?)&')
+        en_word=regext.findall(response.url)[0]
         if response.url == "http://www.baidu.com":
             print 'continue'
         else:
             #en_word = response.meta['en_word']
             en_word = str(response.meta)
-            en_word='man'
             pr_us  = response.xpath('//*[@class="hd_prUS"]/text()').extract()[0]
             gr = response.xpath('//*[@class="hd_pr"]/text()').extract()[0]
             audio_us = response.xpath('//*[@class="hd_tf"]/a/@onmouseover').extract()[0]
