@@ -183,7 +183,10 @@ def save_sentence(item):
         ob.english=sentence_en
         ob.chinese=sentence_cn
         ob.status=0
-        save_data(ob)
+        #save_data(ob)
+        session=DBSession()
+        session.add(ob)
+        session.commit()
 
 @handle_exception
 def save_basic_word_association(master_id,item):
