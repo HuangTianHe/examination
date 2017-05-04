@@ -48,8 +48,13 @@ def insert_basic_word_base(item):
     ob.status=1
     ob.upload_time=datetime.datetime.now()
     ob.update_time=datetime.datetime.now()
-    id=save_data(ob)
-    return id
+    #id=save_data(ob)
+    #return id
+    session = DBSession()
+    session.add(ob)
+    session.commit()
+    return ob.id
+
 
 @handle_exception
 def insert_one_basic_word_property(basic_id,attribute,translation):
@@ -62,8 +67,12 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
     ob.status=1
     ob.upload_time=datetime.datetime.now()
     ob.update_time=datetime.datetime.now()
-    id=save_data(ob)
-    return id
+    #id=save_data(ob)
+    #return id
+    session = DBSession()
+    session.add(ob)
+    session.commit()
+    return ob.id
 
 def insert_basic_word_properties(basic_id,material_ids,item):
     for attribute,translations in item['desc'].items():
@@ -83,16 +92,25 @@ def insert_basic_word_phonetic(prop_id,material_ids,item):
     ob.spell=item['audio_us_href']
     ob.audio_file_md5=material_ids[0]
     ob.type=0
-    id=save_data(ob)
-    ids.append(id)
+    #id=save_data(ob)
+    #ids.append(id)
+    session = DBSession()
+    session.add(ob)
+    session.commit()
+    ids.append(ob.id)
 
     ob=BasicWordPhonetic()
     ob.prop_id = prop_id
     ob.spell = item['audio_href']
     ob.audio_file_md5 =material_ids[1]
     ob.type = 1
-    id=save_data(ob)
-    ids.append(id)
+    #id=save_data(ob)
+    #ids.append(id)
+    #return ids
+    session = DBSession()
+    session.add(ob)
+    session.commit()
+    ids.append(ob.id)
     return ids
 
 
@@ -120,8 +138,11 @@ def insert_basic_material(item):
         if query:
             ids.append(query.id)
         else:
-            id=save_data(ob)
-            ids.append(id)
+            #id=save_data(ob)
+            session = DBSession()
+            session.add(ob)
+            session.commit()
+            ids.append(ob.id)
     return ids
 
 def insert_basic_word_transform(item):
@@ -171,6 +192,10 @@ def insert_basic_word_transform(item):
                 'type is %s,spell is %s'%(item['tense_names'][i],item['tense_words'][i]))
 
         save_data(ob)
+        session = DBSession()
+        session.add(ob)
+        session.commit()
+
 
 @handle_exception
 def save_sentence(item):
@@ -189,10 +214,10 @@ def save_sentence(item):
         ob.english=sentence_en
         ob.chinese=sentence_cn
         ob.status=0
-        save_data(ob)
-        #session=DBSession()
-        #session.add(ob)
-        #session.commit()
+        #save_data(ob)
+        session=DBSession()
+        session.add(ob)
+        session.commit()
     return True
 @handle_exception
 def save_basic_word_association(master_id,item):
@@ -211,7 +236,11 @@ def save_basic_word_association(master_id,item):
                 ob.slave_base_id=slave.id
             else:
                 ob.slave_base_id=0
-            save_data(ob)
+            #save_data(ob)
+            session = DBSession()
+            session.add(ob)
+            session.commit()
+
     #近义词
     for i in range(len(item['synonymous_nature'])):
         for one in item['synonymous_words'][i]:
@@ -227,7 +256,10 @@ def save_basic_word_association(master_id,item):
                 ob.slave_base_id=slave.id
             else:
                 ob.slave_base_id=0
-            save_data(ob)
+            #save_data(ob)
+            session = DBSession()
+            session.add(ob)
+            session.commit()
 
     #反义词
     for i in range(len(item['antonym_nature'])):
@@ -244,7 +276,10 @@ def save_basic_word_association(master_id,item):
                 ob.slave_base_id=slave.id
             else:
                 ob.slave_base_id=0
-            save_data(ob)
+            #save_data(ob)
+            session = DBSession()
+            session.add(ob)
+            session.commit()
     return True
 
 @handle_exception
