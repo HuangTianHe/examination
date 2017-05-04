@@ -76,21 +76,24 @@ def insert_basic_word_properties(basic_id,material_ids,item):
 
 @handle_exception
 def insert_basic_word_phonetic(prop_id,material_ids,item):
-
+    ids=[]
     ob=BasicWordPhonetic()
     ob.prop_id=prop_id
     ob.spell=item['audio_us_href']
     ob.audio_file_md5=material_ids[0]
     ob.type=0
-    save_data(ob)
-
+    id=save_data(ob)
+    ids.append(id)
 
     ob=BasicWordPhonetic()
     ob.prop_id = prop_id
     ob.spell = item['audio_href']
     ob.audio_file_md5 =material_ids[1]
     ob.type = 1
-    save_data(ob)
+    id=save_data(ob)
+    ids.append(id)
+    return ids
+
 
 @handle_exception
 def insert_basic_material(item):
@@ -173,6 +176,7 @@ def save_sentence(item):
     en_word=item['en_word']
     word=item['eg_sentence']['word']
     for i in range(len(item['eg_sentence']['cn_list'])):
+        get_log(settings.LOG_NAME_BINGWORD).info('handle one sentence, word is %s,meaning is %s'%(en_word,word))
         slist_cn=item['eg_sentence']['cn_list'][i]
         sentence_cn =''.join(slist_cn)
         slist_en =item['eg_sentence']['en_list'][i]
@@ -184,11 +188,11 @@ def save_sentence(item):
         ob.english=sentence_en
         ob.chinese=sentence_cn
         ob.status=0
-        #save_data(ob)
-        session=DBSession()
-        session.add(ob)
-        session.commit()
-
+        save_data(ob)
+        #session=DBSession()
+        #session.add(ob)
+        #session.commit()
+    return True
 @handle_exception
 def save_basic_word_association(master_id,item):
     # 词组
@@ -240,6 +244,7 @@ def save_basic_word_association(master_id,item):
             else:
                 ob.slave_base_id=0
             save_data(ob)
+    return True
 
 @handle_exception
 def query_basiec_word_base(word):
@@ -251,18 +256,19 @@ def query_basiec_word_base(word):
         return False
 
 def save_data(ob,try_time=1):
-    global session
+    #global session
     try:
         # 创建session对象:
+        session=DBSession()
         session.add(ob)
         session.commit()
         id=ob.id
-        #session.close()
+        session.close()
         return id
     except:
         #session=DBSession()
-        #session.rollback()
-        #session.close()
+        session.rollback()
+        session.close()
         t, b, tb = sys.exc_info()
         get_log(settings.LOG_NAME_BINGWORD).error('save data appear error,try time is %s, %s:%s,%s' % (try_time,t, b, traceback.print_tb(tb)))
         if try_time>=settings.TRY_TIME:
