@@ -76,20 +76,20 @@ def insert_basic_word_properties(basic_id,material_ids,item):
 @handle_exception
 def insert_basic_word_phonetic(prop_id,material_ids,item):
 
-    ob_us=BasicWordPhonetic()
-    ob_us.prop_id=prop_id
-    ob_us.spell=item['audio_us_href']
-    ob_us.audio_file_md5=material_ids[0]
-    ob_us.type=0
-    save_data(ob_us)
+    ob=BasicWordPhonetic()
+    ob.prop_id=prop_id
+    ob.spell=item['audio_us_href']
+    ob.audio_file_md5=material_ids[0]
+    ob.type=0
+    save_data(ob)
 
 
-    ob_uk = BasicWordPhonetic()
-    ob_uk.prop_id = prop_id
-    ob_uk.spell = item['audio_href']
-    ob_uk.audio_file_md5 =material_ids[1]
-    ob_uk.type = 1
-    save_data(ob_uk)
+    #ob_uk=BasicWordPhonetic()
+    ob.prop_id = prop_id
+    ob.spell = item['audio_href']
+    ob.audio_file_md5 =material_ids[1]
+    ob.type = 1
+    save_data(ob)
 
 @handle_exception
 def insert_basic_material(item):
