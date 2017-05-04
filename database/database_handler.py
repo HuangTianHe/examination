@@ -11,6 +11,7 @@ import copy
 
 from sqlalchemy import Column, String, create_engine,Integer,ForeignKey
 from sqlalchemy.orm import sessionmaker,relationship
+from sqlalchemy.pool import NullPool
 
 from database.basic_word_base import BasicWordBase
 from database.basic_word_property import BasicWordProperty
@@ -22,7 +23,7 @@ from database.basic_word_transform import BasicWordTranceform
 from utils.mylogger import get_log
 from examination import settings
 
-engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8',max_overflow=50)
+engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8',poolclass=NullPool)
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
