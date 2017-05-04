@@ -7,7 +7,7 @@ from examination.util import *
 from dadabase import database_handler
 from scrapy import log
 
-log.start(logfile=None,loglevel='INFO',logstdout=True)
+#log.start(logfile=None,loglevel='INFO',logstdout=True)
 
 prefix = 'http://www.bing.com/dict/search?q='
 r=redis.StrictRedis(host='172.18.4.81',port=6379,db=1)
@@ -19,7 +19,7 @@ class BingwordSpider(scrapy.Spider):
         #'http://cn.bing.com/dict/search?intlF=0&q=wrong&FORM=HDRSC6',
         'http://cn.bing.com/dict/search?intlF=0&q=man&FORM=HDRSC6',
     )
-    log.msg('good')
+    log.msg("start bingword spider!")
 
     def parse(self, response):
         item = BingItems()
