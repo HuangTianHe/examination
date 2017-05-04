@@ -167,6 +167,7 @@ def insert_basic_word_transform(item):
 
         save_data(ob)
 
+@handle_exception
 def save_sentence(item):
     en_word=item['en_word']
     word=item['eg_sentence']['word']
@@ -184,6 +185,7 @@ def save_sentence(item):
         ob.status=0
         save_data(ob)
 
+@handle_exception
 def save_basic_word_association(master_id,item):
     # 词组
     for i in range(len(item['phrase_nature'])):
@@ -235,7 +237,7 @@ def save_basic_word_association(master_id,item):
                 ob.slave_base_id=0
             save_data(ob)
 
-
+@handle_exception
 def query_basiec_word_base(word):
     session = DBSession()
     query = session.query(BasicWordBase).filter_by(spell=word).first()
