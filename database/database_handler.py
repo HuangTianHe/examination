@@ -25,6 +25,7 @@ from examination import settings
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 def handle_exception(fun):
     def inner_fun(*args,**kwargs):
@@ -250,15 +251,16 @@ def query_basiec_word_base(word):
         return False
 
 def save_data(ob,try_time=1):
+    global session
     try:
         # 创建session对象:
-        session = DBSession()
         session.add(ob)
         session.commit()
         id=ob.id
         #session.close()
         return id
     except:
+        #session=DBSession()
         #session.rollback()
         #session.close()
         t, b, tb = sys.exc_info()
