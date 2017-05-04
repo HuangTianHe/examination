@@ -23,7 +23,9 @@ from database.basic_word_transform import BasicWordTranceform
 from utils.mylogger import get_log
 from examination import settings
 
-engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8',poolclass=NullPool)
+#engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8',poolclass=NullPool)
+engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
+
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
