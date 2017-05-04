@@ -250,8 +250,9 @@ def save_data(ob,try_time=1):
         session = DBSession()
         session.add(ob)
         session.commit()
+        id=ob.id
         session.close()
-        return ob.id
+        return id
     except:
         t, b, tb = sys.exc_info()
         get_log(settings.LOG_NAME_BINGWORD).error('save data appear error,try time is %s, %s:%s,%s' % (try_time,t, b, traceback.print_tb(tb)))
@@ -260,5 +261,5 @@ def save_data(ob,try_time=1):
             if '_sa_instance_state' in ob_data:
                 del ob_data['_sa_instance_state']
             get_log(settings.LOG_NAME_BINGWORD).error('save fail,want to save data is :%s'%(json.dumps(ob_data,encoding='utf-8',ensure_ascii=False)))
-            return 
+            return
         save_data(ob,try_time+1)
