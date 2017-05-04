@@ -250,6 +250,7 @@ def save_data(ob,try_time=1):
         session = DBSession()
         session.add(ob)
         session.commit()
+        session.close()
         return ob.id
     except:
         t, b, tb = sys.exc_info()
