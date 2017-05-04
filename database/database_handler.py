@@ -267,7 +267,7 @@ def save_data(ob,try_time=1):
         return id
     except:
         #session=DBSession()
-        session.rollback()
+        #session.rollback()
         session.close()
         t, b, tb = sys.exc_info()
         get_log(settings.LOG_NAME_BINGWORD).error('save data appear error,try time is %s, %s:%s,%s' % (try_time,t, b, traceback.print_tb(tb)))
