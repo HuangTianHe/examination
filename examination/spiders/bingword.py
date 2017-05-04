@@ -5,6 +5,7 @@ import re
 import scrapy
 import redis
 from examination.bingitems import BingItems , BingEgSenItems
+
 from examination.util import * 
 from database import database_handler
 from examination import settings
@@ -31,6 +32,12 @@ class BingwordSpider(scrapy.Spider):
         item = BingItems()
         regext=re.compile('&q=(.*?)&')
         en_word=regext.findall(response.url)[0]
+
+        is_exist=database_handler.query_basiec_word_base(en_word)
+        if is_exist:
+            get_log(settings.LOG_NAME_BINGWORD).info("the word : %s ,database have existed")
+            get_log(settings.LOG_NAME_BINGWORD).error("the word : %s ,database have existed")
+            return
         if response.url == "http://www.baidu.com":
             print 'continue'
         else:

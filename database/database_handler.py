@@ -269,3 +269,11 @@ def save_ssdb(master_id,item):
     transform={}
 
     association={}
+
+def query_basiec_word_base(word):
+    session = DBSession()
+    query = session.query(BasicWordBase).filter_by(spell=word).first()
+    if query:
+        return True
+    else:
+        return False
