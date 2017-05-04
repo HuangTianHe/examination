@@ -84,7 +84,7 @@ def insert_basic_word_phonetic(prop_id,material_ids,item):
     save_data(ob)
 
 
-    #ob_uk=BasicWordPhonetic()
+    ob=BasicWordPhonetic()
     ob.prop_id = prop_id
     ob.spell = item['audio_href']
     ob.audio_file_md5 =material_ids[1]
