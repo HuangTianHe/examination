@@ -18,7 +18,8 @@ from database.basic_material import BasicMaterail
 from database.basic_word_sentence import BasicWordSentence
 from database.basic_word_association import BasicWordAssociation
 from database.basic_word_transform import BasicWordTranceform
-
+from utils.mylogger import get_log
+from examination import settings
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
 # 创建DBSession类型:
@@ -30,7 +31,7 @@ def handle_exception(fun):
             return  fun(*args,**kwargs)
         except Exception,e:
             t,b,tb=sys.exc_info()
-            print '%s:%s,%s'%(t,b,traceback.print_tb(tb))
+            get_log(settings.LOG_NAME_BINGWORD).error( '%s:%s,%s'%(t,b,traceback.print_tb(tb)))
     return inner_fun
 
 @handle_exception
@@ -103,7 +104,7 @@ def insert_basic_word_phonetic(prop_id,material_ids,item):
 def insert_basic_material(item):
     ids=[]
     for audio in (item['audio_us'],item['audio']):
-        regext=re.compile('(https://.*?,)',re.S)
+        regext=re.compile("(https://.*?)',",re.S)
         url=regext.findall(audio)
         url=url[0]
         print url

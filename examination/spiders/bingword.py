@@ -35,8 +35,8 @@ class BingwordSpider(scrapy.Spider):
 
         is_exist=database_handler.query_basiec_word_base(en_word)
         if is_exist:
-            get_log(settings.LOG_NAME_BINGWORD).info("the word : %s ,database have existed")
-            get_log(settings.LOG_NAME_BINGWORD).error("the word : %s ,database have existed")
+            get_log(settings.LOG_NAME_BINGWORD).info("the word : %s ,database have existed"%en_word)
+            get_log(settings.LOG_NAME_BINGWORD).error("the word : %s ,database have existed"%en_word)
             return
         if response.url == "http://www.baidu.com":
             print 'continue'
