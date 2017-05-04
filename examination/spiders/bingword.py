@@ -15,12 +15,16 @@ prefix = 'http://www.bing.com/dict/search?q='
 r=redis.StrictRedis(host='172.18.4.81',port=6379,db=1)
 class BingwordSpider(scrapy.Spider):
     name = "bingword"
-    start_urls = (
+    #start_urls = (
         #'http://www.baidu.com',
         #'http://cn.bing.com/dict/search?intlF=0&q=right&FORM=HDRSC6',
         #'http://cn.bing.com/dict/search?intlF=0&q=wrong&FORM=HDRSC6',
-        'http://cn.bing.com/dict/search?intlF=0&q=man&FORM=HDRSC6',
-    )
+        #'http://cn.bing.com/dict/search?intlF=0&q=man&FORM=HDRSC6',
+    #)
+    url_fix='http://cn.bing.com/dict/search?intlF=0&q=%s&FORM=HDRSC6'
+    start_urls=[]
+    for word in open('word.txt'):
+        start_urls.append(url_fix%word.strip())
     get_log(settings.LOG_NAME_BINGWORD).info("start bingword spider!")
 
     def parse(self, response):
@@ -30,7 +34,7 @@ class BingwordSpider(scrapy.Spider):
         if response.url == "http://www.baidu.com":
             print 'continue'
         else:
-            get_log(settings.LOG_NAME_BINGWORD).info("start to get the %s"%(en_word,))
+            get_log(settings.LOG_NAME_BINGWORD).info("start to get the word: %s"%(en_word,))
             pr_us  = response.xpath('//*[@class="hd_prUS"]/text()').extract()[0]
             gr = response.xpath('//*[@class="hd_pr"]/text()').extract()[0]
             audio_us = response.xpath('//*[@class="hd_tf"]/a/@onmouseover').extract()[0]
@@ -146,6 +150,7 @@ class BingwordSpider(scrapy.Spider):
         
         word = response.meta['word']
         en_word = response.meta['en_word']
+        get_log(settings.LOG_NAME_BINGWORD).info('get the sentence ,word is %s,meaning is %s'%(en_word,word))
         item = BingEgSenItems()
         sentence_list = response.xpath('//*[@class="se_li"]')
         eg_sentence ={}
