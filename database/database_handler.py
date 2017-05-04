@@ -248,8 +248,9 @@ def save_data(ob,try_time=1):
     try:
         # 创建session对象:
         session = DBSession()
-        session.add(ob)
-        session.commit()
+        current_session=session.object_session(ob)
+        current_session.add(ob)
+        current_session.commit()
         id=ob.id
         session.close()
         return id
