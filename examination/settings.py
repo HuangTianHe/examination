@@ -103,3 +103,4 @@ SSDB_CONFIG={
     'host':'172.18.4.81',
     'port':8888
 }
+LOG_FILE='/xdfapp/huangtianhe/logs/examination'
