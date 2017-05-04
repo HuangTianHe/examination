@@ -37,7 +37,6 @@ def handle_exception(fun):
 @handle_exception
 def insert_basic_word_base(item):
     # 创建session对象:
-    session = DBSession()
     ob=BasicWordBase()
     ob.spell=item['en_word'].strip()
     #ob.desc=json.dumps(item['cn_meaning'],encoding='utf-8',ensure_ascii=False)
@@ -46,14 +45,11 @@ def insert_basic_word_base(item):
     ob.status=1
     ob.upload_time=datetime.datetime.now()
     ob.update_time=datetime.datetime.now()
-    session.add(ob)
-    session.commit()
-    return ob.id
+    id=save_data(ob)
+    return id
 
 @handle_exception
 def insert_one_basic_word_property(basic_id,attribute,translation):
-    # 创建session对象:
-    session = DBSession()
     ob=BasicWordProperty()
     ob.base_id=basic_id
     ob.type=0
@@ -63,9 +59,8 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
     ob.status=1
     ob.upload_time=datetime.datetime.now()
     ob.update_time=datetime.datetime.now()
-    session.add(ob)
-    session.commit()
-    return ob.id
+    id=save_data(ob)
+    return id
 
 def insert_basic_word_properties(basic_id,material_ids,item):
     for attribute,translations in item['desc'].items():
@@ -80,25 +75,20 @@ def insert_basic_word_properties(basic_id,material_ids,item):
 @handle_exception
 def insert_basic_word_phonetic(prop_id,material_ids,item):
 
-    # 创建session对象:
-    session = DBSession()
     ob=BasicWordPhonetic()
     ob.prop_id=prop_id
     ob.spell=item['audio_us_href']
     ob.audio_file_md5=material_ids[0]
     ob.type=0
-    session.add(ob)
-    session.commit()
+    save_data(ob)
 
-    # 创建session对象:
-    session = DBSession()
+
     ob = BasicWordPhonetic()
     ob.prop_id = prop_id
     ob.spell = item['audio_href']
     ob.audio_file_md5 =material_ids[1]
     ob.type = 1
-    session.add(ob)
-    session.commit()
+    save_data(ob)
 
 @handle_exception
 def insert_basic_material(item):
@@ -108,7 +98,6 @@ def insert_basic_material(item):
         url=regext.findall(audio)
         url=url[0]
         print url
-        session=DBSession()
         ob=BasicMaterail()
         ob.md5sum=url
         ob.img_url=''
@@ -120,19 +109,17 @@ def insert_basic_material(item):
         ob.fdfs_size='0'
         ob.upload_time=datetime.datetime.now()
         ob.update_time=datetime.datetime.now()
+        session = DBSession()
         query=session.query(BasicMaterail).filter_by(md5sum=url).first()
         if query:
             ids.append(query.id)
         else:
-            session.add(ob)
-            session.commit()
-            ids.append(ob.id)
+            id=save_data(ob)
+            ids.append(id)
     return ids
 
 def insert_basic_word_transform(item):
     for i in range(len(item['tense_names'])):
-        vaule=item['tense_words'][i]
-        session = DBSession()
         ob = BasicWordTranceform()
         ob.prop_ext=item['en_word'].strip()
         # 复数
@@ -174,13 +161,10 @@ def insert_basic_word_transform(item):
         else:
             print item['tense_names'][i]
             print item['tense_words'][i]
+            get_log(settings.LOG_NAME_BINGWORD).error('the nonsupport transform type. '
+                'type is %s,spell is %s'%(item['tense_names'][i],item['tense_words'][i]))
 
-        try:
-            session.add(ob)
-            session.commit()
-        except Exception,e:
-            t,b,tb=sys.exc_info()
-            print '%s:%s,%s'%(t,b,traceback.print_tb(tb))
+        save_data(ob)
 
 def save_sentence(item):
     en_word=item['en_word']
@@ -190,7 +174,6 @@ def save_sentence(item):
         sentence_cn =''.join(slist_cn)
         slist_en =item['eg_sentence']['en_list'][i]
         sentence_en=''.join(slist_en)
-        session = DBSession()
         ob = BasicWordSentence()
         ob.prop_id=0
         ob.prop_ext='%s&%s'%(en_word,word)
@@ -198,27 +181,25 @@ def save_sentence(item):
         ob.english=sentence_en
         ob.chinese=sentence_cn
         ob.status=0
-        session.add(ob)
-        session.commit()
+        save_data(ob)
 
 def save_basic_word_association(master_id,item):
     # 词组
     for i in range(len(item['phrase_nature'])):
         for one in item['phrase_words'][i]:
-            session=DBSession()
             ob=BasicWordAssociation()
             ob.type=0
             ob.master_base_id=master_id
             ob.status=0
             ob.master_prop_id=0
             ob.slave_spell=one.strip()
+            session = DBSession()
             slave=session.query(BasicWordBase).filter_by(spell=one.strip()).first()
             if slave:
                 ob.slave_base_id=slave.id
             else:
                 ob.slave_base_id=0
-            session.add(ob)
-            session.commit()
+            save_data(ob)
     #近义词
     for i in range(len(item['synonymous_nature'])):
         for one in item['synonymous_words'][i]:
@@ -234,8 +215,7 @@ def save_basic_word_association(master_id,item):
                 ob.slave_base_id=slave.id
             else:
                 ob.slave_base_id=0
-            session.add(ob)
-            session.commit()
+            save_data(ob)
 
     #反义词
     for i in range(len(item['antonym_nature'])):
@@ -252,24 +232,8 @@ def save_basic_word_association(master_id,item):
                 ob.slave_base_id=slave.id
             else:
                 ob.slave_base_id=0
-            session.add(ob)
-            session.commit()
+            save_data(ob)
 
-
-
-
-
-
-    # 近义词
-    synonym = []
-    # 反义词
-    antonym = []
-
-def save_ssdb(master_id,item):
-    ssdb_kay='ssdb_word_%s'%(item['en_word'])
-    transform={}
-
-    association={}
 
 def query_basiec_word_base(word):
     session = DBSession()
@@ -278,3 +242,17 @@ def query_basiec_word_base(word):
         return True
     else:
         return False
+
+def save_data(ob,try_time=1):
+    try:
+        # 创建session对象:
+        session = DBSession()
+        session.add(ob)
+        session.commit()
+        return ob.id
+    except:
+        t, b, tb = sys.exc_info()
+        get_log(settings.LOG_NAME_BINGWORD).error('save data appear error,try time is %s, %s:%s,%s' % (try_time,t, b, traceback.print_tb(tb)))
+        if try_time>=settings.TRY_TIME:
+            get_log(settings.LOG_NAME_BINGWORD).error('save fail,want to save data is :%s'%(json.dumps(ob.__dict__,encoding='utf-8',ensure_ascii=False)))
+        save_data(ob,try_time+1)

@@ -112,4 +112,7 @@ SSDB_CONFIG={
 LOG_DIR='/xdfapp/huangtianhe/logs/examination/'
 LOG_NAME_BINGWORD='bingword'
 
+#保存数据出错，重试次数
+TRY_TIME=3
+
 
