@@ -260,6 +260,7 @@ def save_data(ob,try_time=1):
         get_log(settings.LOG_NAME_BINGWORD).error('save data appear error,try time is %s, %s:%s,%s' % (try_time,t, b, traceback.print_tb(tb)))
         if try_time>=settings.TRY_TIME:
             ob_data=copy.deepcopy(ob)
+            ob_data=ob.__dict__
             if '_sa_instance_state' in ob_data:
                 del ob_data['_sa_instance_state']
             get_log(settings.LOG_NAME_BINGWORD).error('save fail,want to save data is :%s'%(json.dumps(ob_data,encoding='utf-8',ensure_ascii=False)))
