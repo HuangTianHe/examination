@@ -256,11 +256,11 @@ def save_data(ob,try_time=1):
         session.add(ob)
         session.commit()
         id=ob.id
-        session.close()
+        #session.close()
         return id
     except:
-        session.rollback()
-        session.close()
+        #session.rollback()
+        #session.close()
         t, b, tb = sys.exc_info()
         get_log(settings.LOG_NAME_BINGWORD).error('save data appear error,try time is %s, %s:%s,%s' % (try_time,t, b, traceback.print_tb(tb)))
         if try_time>=settings.TRY_TIME:
