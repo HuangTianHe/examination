@@ -28,7 +28,7 @@ engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset
 
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
+#session = DBSession()
 
 def handle_exception(fun):
     def inner_fun(*args,**kwargs):
@@ -38,6 +38,7 @@ def handle_exception(fun):
             t,b,tb=sys.exc_info()
             get_log(settings.LOG_NAME_BINGWORD).error( '%s:%s,%s'%(t,b,traceback.print_tb(tb)))
     return inner_fun
+
 
 @handle_exception
 def insert_basic_word_base(item):
@@ -76,6 +77,7 @@ def insert_one_basic_word_property(basic_id,attribute,translation):
     session.commit()
     return ob.id
 
+@handle_exception
 def insert_basic_word_properties(basic_id,material_ids,item):
     for attribute,translations in item['desc'].items():
         translations=translations.encode('utf-8')
@@ -146,7 +148,7 @@ def insert_basic_material(item):
             session.commit()
             ids.append(ob.id)
     return ids
-
+@handle_exception
 def insert_basic_word_transform(item):
     for i in range(len(item['tense_names'])):
         ob = BasicWordTranceform()
@@ -193,11 +195,10 @@ def insert_basic_word_transform(item):
             get_log(settings.LOG_NAME_BINGWORD).error('the nonsupport transform type. '
                 'type is %s,spell is %s'%(item['tense_names'][i],item['tense_words'][i]))
 
-        save_data(ob)
+        #save_data(ob)
         session = DBSession()
         session.add(ob)
         session.commit()
-
 
 @handle_exception
 def save_sentence(item):
