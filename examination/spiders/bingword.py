@@ -6,11 +6,11 @@ import scrapy
 import redis
 from examination.bingitems import BingItems , BingEgSenItems
 from examination.util import * 
-from dadabase import database_handler
-from scrapy import log
+from database import database_handler
+from examination import settings
+from utils.mylogger import get_log,setlogfile
 
-#log.start(logfile=None,loglevel='INFO',logstdout=True)
-
+setlogfile(settings.LOG_NAME_BINGWORD,None,settings.LOG_DIR)
 prefix = 'http://www.bing.com/dict/search?q='
 r=redis.StrictRedis(host='172.18.4.81',port=6379,db=1)
 class BingwordSpider(scrapy.Spider):
@@ -21,7 +21,7 @@ class BingwordSpider(scrapy.Spider):
         #'http://cn.bing.com/dict/search?intlF=0&q=wrong&FORM=HDRSC6',
         'http://cn.bing.com/dict/search?intlF=0&q=man&FORM=HDRSC6',
     )
-    log.msg("start bingword spider!")
+    get_log(settings.LOG_NAME_BINGWORD).info("start bingword spider!")
 
     def parse(self, response):
         item = BingItems()
@@ -30,8 +30,7 @@ class BingwordSpider(scrapy.Spider):
         if response.url == "http://www.baidu.com":
             print 'continue'
         else:
-            #en_word = response.meta['en_word']
-            #en_word = str(response.meta)
+            get_log(settings.LOG_NAME_BINGWORD).info("start to get the %s"%(en_word,))
             pr_us  = response.xpath('//*[@class="hd_prUS"]/text()').extract()[0]
             gr = response.xpath('//*[@class="hd_pr"]/text()').extract()[0]
             audio_us = response.xpath('//*[@class="hd_tf"]/a/@onmouseover').extract()[0]

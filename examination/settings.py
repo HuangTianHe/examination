@@ -74,9 +74,9 @@ DOWNLOADER_MIDDLEWARES = {
 #    'examination.pipelines.SomePipeline': 300,
 #}
 
-#ITEM_PIPELINES = {
-#    'examination.pipelines.ExaminationPipeline': 10,
-#}
+ITEM_PIPELINES = {
+    'examination.pipelines.ExaminationPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -99,8 +99,17 @@ DOWNLOADER_MIDDLEWARES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+#LOG_FILE='/xdfapp/huangtianhe/logs/examination/examination.log'
+
+
+##############################################################
+# my config
 SSDB_CONFIG={
     'host':'172.18.4.81',
     'port':8888
 }
-LOG_FILE='/xdfapp/huangtianhe/logs/examination/examination.log'
+
+LOG_DIR='/xdfapp/huangtianhe/logs/examination/'
+LOG_NAME_BINGWORD='bingword'
+
+

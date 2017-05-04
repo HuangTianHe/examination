@@ -11,13 +11,13 @@ import traceback
 from sqlalchemy import Column, String, create_engine,Integer,ForeignKey
 from sqlalchemy.orm import sessionmaker,relationship
 
-from dadabase.basic_word_base import BasicWordBase
-from dadabase.basic_word_property import BasicWordProperty
-from dadabase.basic_word_phonetic import BasicWordPhonetic
-from dadabase.basic_material import BasicMaterail
-from dadabase.basic_word_sentence import BasicWordSentence
-from dadabase.basic_word_association import BasicWordAssociation
-from dadabase.basic_word_transform import BasicWordTranceform
+from database.basic_word_base import BasicWordBase
+from database.basic_word_property import BasicWordProperty
+from database.basic_word_phonetic import BasicWordPhonetic
+from database.basic_material import BasicMaterail
+from database.basic_word_sentence import BasicWordSentence
+from database.basic_word_association import BasicWordAssociation
+from database.basic_word_transform import BasicWordTranceform
 
 
 engine = create_engine('mysql://admintest:dsjw2015@172.18.4.81:3307/word?charset=utf8')
